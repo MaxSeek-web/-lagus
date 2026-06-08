@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переводчик + Корректор</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container" id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="logo">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <h1>Lingua</h1>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="historyBtn" title="История переводов">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span class="badge" id="historyBadge" style="display:none">0</span>
+                </button>
+                <button class="header-btn" id="themeBtn" title="Переключить тему">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="translator">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                Перевод
+            </button>
+            <button class="tab-btn" data-tab="corrector">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Исправление текста
+            </button>
+        </div>
+
+        <main>
+            <!-- ===== TRANSLATOR TAB ===== -->
+            <div class="tab-content active" id="tab-translator">
+                <div class="translator-card">
+                    <div class="language-bar">
+                        <div class="lang-select-wrapper source">
+                            <button class="lang-select-btn" id="sourceLangBtn">
+                                <span id="sourceLangLabel">Автоопределение</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="lang-dropdown" id="sourceLangDropdown">
+                                <input type="text" class="lang-search" id="sourceLangSearch" placeholder="Поиск языка...">
+                                <div class="lang-list" id="sourceLangList"></div>
+                            </div>
+                        </div>
+
+                        <button class="swap-btn" id="swapBtn" title="Поменять языки местами">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="17 1 21 5 17 9"/>
+                                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                <polyline points="7 23 3 19 7 15"/>
+                                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                            </svg>
+                        </button>
+
+                        <div class="lang-select-wrapper target">
+                            <button class="lang-select-btn" id="targetLangBtn">
+                                <span id="targetLangLabel">Английский</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="lang-dropdown" id="targetLangDropdown">
+                                <input type="text" class="lang-search" id="targetLangSearch" placeholder="Поиск языка...">
+                                <div class="lang-list" id="targetLangList"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="translation-area">
+                        <div class="text-section source-section">
+                            <div class="text-header">
+                                <span class="detected-lang" id="detectedLang"></span>
+                            </div>
+                            <textarea
+                                id="sourceText"
+                                class="translation-textarea"
+                                placeholder="Введите текст для перевода..."
+                                rows="5"
+                            ></textarea>
+                            <div class="text-footer">
+                                <div class="text-actions">
+                                    <button class="icon-btn" id="clearBtn" title="Очистить">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"/>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span class="char-count" id="charCount">0</span>
+                            </div>
+                        </div>
+
+                        <div class="divider">
+                            <div class="divider-line"></div>
+                            <div class="divider-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="5 12 19 12"/>
+                                    <polyline points="12 5 19 12 12 19"/>
+                                </svg>
+                            </div>
+                            <div class="divider-line"></div>
+                        </div>
+
+                        <div class="text-section target-section">
+                            <div class="text-header">
+                                <span class="translation-label">Перевод</span>
+                            </div>
+                            <div class="translation-output" id="targetText">
+                                <span class="placeholder">Перевод появится здесь</span>
+                            </div>
+                            <div class="text-footer">
+                                <div class="text-actions">
+                                    <button class="icon-btn" id="copyBtn" title="Копировать">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="icon-btn" id="speakTargetBtn" title="Озвучить">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== CORRECTOR TAB ===== -->
+            <div class="tab-content" id="tab-corrector">
+                <div class="corrector-card">
+                    <div class="corrector-header">
+                        <h2>Исправление текста</h2>
+                        <p class="corrector-desc">Проверка грамматики, орфографии и пунктуации</p>
+                    </div>
+
+                    <div class="corrector-lang-bar">
+                        <div class="lang-select-wrapper">
+                            <button class="lang-select-btn" id="correctLangBtn">
+                                <span id="correctLangLabel">Русский</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                            <div class="lang-dropdown" id="correctLangDropdown">
+                                <input type="text" class="lang-search" id="correctLangSearch" placeholder="Поиск языка...">
+                                <div class="lang-list" id="correctLangList"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="corrector-area">
+                        <div class="text-section">
+                            <div class="text-header">
+                                <span class="detected-lang">Исходный текст</span>
+                            </div>
+                            <textarea
+                                id="correctSource"
+                                class="translation-textarea"
+                                placeholder="Введите текст для проверки..."
+                                rows="5"
+                            ></textarea>
+                            <div class="text-footer">
+                                <div class="text-actions">
+                                    <button class="action-btn primary" id="correctBtn">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                        Проверить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="corrector-results" id="correctResults">
+                            <div class="correct-status" id="correctStatus">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.3">
+                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                </svg>
+                                <p>Нажмите «Проверить» для проверки текста</p>
+                            </div>
+                            <div class="correct-output" id="correctOutput" style="display:none">
+                                <div class="correct-stats" id="correctStats"></div>
+                                <div class="correct-text" id="correctText"></div>
+                                <div class="text-footer">
+                                    <div class="text-actions">
+                                        <button class="icon-btn" id="copyCorrectBtn" title="Копировать исправленный текст">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="correct-diff" id="correctDiff" style="display:none">
+                                <div class="diff-title">Изменения:</div>
+                                <div class="diff-list" id="diffList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading overlay -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
+            </div>
+        </main>
+
+        <!-- History Panel (slide-out) -->
+        <div class="history-overlay" id="historyOverlay"></div>
+        <div class="history-panel" id="historyPanel">
+            <div class="history-header">
+                <h2>История переводов</h2>
+                <div class="history-actions">
+                    <button class="header-btn danger" id="clearHistoryBtn" title="Очистить историю">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                    <button class="header-btn" id="closeHistoryBtn" title="Закрыть">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="history-empty">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <p>История пуста</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Google Translate API · LanguageTool · Speech Synthesis</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
